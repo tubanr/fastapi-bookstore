@@ -23,6 +23,7 @@ def create_book(request: BookBase, db: Session = Depends(get_db)):
 
 
 
+
 """@router.get('', response_model=List[BookDisplay])
 def get_all_books(db: Session = Depends(get_db)):
     return db_book.get_all_books(db)"""
