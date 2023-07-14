@@ -11,9 +11,8 @@ from database.hashing import Hash
 
 
 
-
 router = APIRouter(
-    prefix='/user',
+    prefix='/signup',
     tags=['user']
 
 )
@@ -23,5 +22,12 @@ router = APIRouter(
 @router.post('', response_model=UserDisplay)
 def create_user(request: UserBase, db: Session = Depends(get_db)):
     return db_user.create_user2(db, request)
+
+
+
+@router.get("/{user_id}", response_model=UserDisplay)
+def get_user(user_id: int, db: Session = Depends(get_db)):
+    user = db_user.get_user_by_id(db, user_id)
+    return user
 
 

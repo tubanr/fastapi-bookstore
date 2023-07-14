@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from database.database import get_db
 from database import db_review
-from routers.schemas import ReviewBase, UserAuth
+from routers.schemas import ReviewBase, UserAuth, ReviewDisplay
 from auth.oauth2 import get_current_user
+from typing import List
 
 router = APIRouter(
     prefix='/reviews',
@@ -11,9 +12,11 @@ router = APIRouter(
 )
 
 
-@router.post('')
+@router.post('') #updated
 def create_review(request: ReviewBase, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
-    return db_review.create_review(db,request, current_user.id)
+    user_id =current_user.id
+
+    return db_review.create_review(db,request, user_id)
 
 
 

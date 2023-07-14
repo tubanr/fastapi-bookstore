@@ -31,8 +31,8 @@ def get_all_books(db: Session = Depends(get_db)):
 
 # search a book  by title or author or keyword
 @router.get('', response_model=List[BookDisplay])
-def search_books_by_keyword(title: str = None, author: str = None, keyword: str = None, db: Session = Depends(get_db)):
-    return db_book.search_books(db, title, author, keyword)
+def search_books_by_keyword(title: str = None, author: str = None, keyword: str = None, book_id: int = None, db: Session = Depends(get_db)):
+    return db_book.search_books(db, title, author, keyword, book_id)
 
 
 # Define route to retrieve a single book by its ID

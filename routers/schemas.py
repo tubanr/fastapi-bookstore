@@ -9,15 +9,16 @@ class UserRole(str,Enum):
 
 class UserBase(BaseModel):
     username: str
-    email: str
+    email: Optional[str] 
     password: str
-    role: UserRole = 'user' # default value as a user
+    role:  Optional[UserRole ] = 'user' # default value as a user
 
 
 class UserDisplay(BaseModel):
     username: str
-    email: str
-    role: str
+    email: Optional[str] 
+    role: Optional[str] 
+    
     
     class Config():
         orm_mode =  True
@@ -63,7 +64,8 @@ class ReviewDisplay(BaseModel):
     id: int
     text: str
     book_id: int
-    user_id: int
+    user:  UserDisplay
+    
     
     class Config():
         orm_mode = True
@@ -105,7 +107,7 @@ class CategoryDisplay(BaseModel):
 class UserAuth(BaseModel):
     id: int
     username: str
-    email: str
+    email: Optional[str]
     role: str
 
     class Config():
@@ -151,6 +153,7 @@ class OrderSchema(BaseModel):
     id: int
     user_id: int
     order_status: OrderStatusEnum
+    
     order_lines: List[OrderLineSchema]
 
     class Config():
@@ -163,6 +166,7 @@ class OrderSchema(BaseModel):
 #schema for retrieving an users order
 class UserOrder(BaseModel):
     user_id: int
+    
     
     class Config():
         orm_mode=True
