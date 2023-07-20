@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.post('') #updated
+@router.post('') 
 def create_review(request: ReviewBase, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
     user_id =current_user.id
 

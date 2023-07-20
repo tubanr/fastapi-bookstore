@@ -1,0 +1,8 @@
+__pychache__/
+bookstore_api.db
+images/*
+!images/.gitkeep
+myenv/
+
+
+
