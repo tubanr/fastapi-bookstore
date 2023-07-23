@@ -151,7 +151,7 @@ class OrderStatusEnum(str, Enum):
 # Schema for order details
 class OrderSchema(BaseModel):
     id: int
-    user_id: int
+    user: UserDisplay
     order_status: OrderStatusEnum
     
     order_lines: List[OrderLineSchema]
