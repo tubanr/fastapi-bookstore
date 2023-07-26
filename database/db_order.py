@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from routers.schemas import OrderCreateSchema,OrderSchema,UserAuth, OrderStatusEnum
+from routers.schemas import OrderCreateSchema,OrderSchema,UserAuth, OrderStatusEnum,OrderSchemaForTable
 from database.models import Order, OrderLine,User
 from fastapi import HTTPException, status
 from  auth.oauth2 import get_current_user_role
@@ -19,6 +19,7 @@ def create_order(db: Session, order_request: OrderCreateSchema, user_id:int):
         book_id = order_line_request.book_id
         quantity = order_line_request.quantity
         order_line =OrderLine(order_id=order.id, book_id=book_id, quantity=quantity)
+
         db.add(order_line)
         db.commit()
         db.refresh(order_line)
@@ -61,22 +62,12 @@ def create_order(db: Session, order_request: OrderCreateSchema, user_id:int):
 
 
 #Display all orders for admin and users
-def get_user_orders(db: Session, user_id:int, current_user_role:str) ->List[OrderSchema]:
+def get_user_orders(db: Session, user_id:int, current_user_role:str) ->List[OrderSchemaForTable]:
     if current_user_role == "admin":
         orders = db.query(Order).all()
     else: 
         orders =db.query(Order).filter(Order.user_id == user_id).all()
-    return [OrderSchema.from_orm(order) for order in orders]
-
-
-# # get orders of an spesific user by user ID
-# def get_user_orders(user_id: int, db: Session):
-#     user = db.query(User).filter(User.id == user_id).first()
-
-#     if not user:
-#         raise HTTPException(status_code=404, detail="User not found")
-    
-#     return user.orders
+    return [OrderSchemaForTable.from_orm(order) for order in orders]
 
 
 
@@ -89,7 +80,7 @@ def get_order_by_id(order_id: int, db: Session):
         
 
 
-def update_order_status(db:Session, order_id:int, order_status: OrderStatusEnum):
+def update_order_status(db:Session, order_id:int, order_status: str):
     order =db.query(Order).filter(Order.id==order_id).first()
     if not order:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
