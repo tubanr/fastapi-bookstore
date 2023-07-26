@@ -49,15 +49,17 @@ def get_order(
 
 @router.put('/{order_id}', response_model=OrderSchema)
 def update_order_status(
-    order_id: int,
-    status_update: OrderStatusEnum,
+    order_id: int, 
+    order_status: str,
     db: Session = Depends(get_db),
     current_user_role: str =Depends(get_current_user_role)):
     
     if current_user_role != "admin":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail="Insufficient privileges")
-    return db_order.update_order_status(db, order_id, status_update)
+    print(order_status)
+    return db_order.update_order_status(db, order_id, order_status)
+
 
 
 

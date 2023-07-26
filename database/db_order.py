@@ -19,6 +19,7 @@ def create_order(db: Session, order_request: OrderCreateSchema, user_id:int):
         book_id = order_line_request.book_id
         quantity = order_line_request.quantity
         order_line =OrderLine(order_id=order.id, book_id=book_id, quantity=quantity)
+
         db.add(order_line)
         db.commit()
         db.refresh(order_line)
@@ -89,7 +90,7 @@ def get_order_by_id(order_id: int, db: Session):
         
 
 
-def update_order_status(db:Session, order_id:int, order_status: OrderStatusEnum):
+def update_order_status(db:Session, order_id:int, order_status: str):
     order =db.query(Order).filter(Order.id==order_id).first()
     if not order:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
