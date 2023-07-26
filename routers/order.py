@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends,HTTPException, status
 from sqlalchemy.orm import Session
 from database.database import get_db
 from database import db_order
-from routers.schemas import OrderSchema, OrderCreateSchema, UserAuth, UserOrder,OrderStatusEnum
+from routers.schemas import OrderSchema, OrderCreateSchema, UserAuth, UserOrder,OrderStatusEnum,OrderSchemaForTable
 from database.models import Order, OrderLine,User
 from auth.oauth2 import get_current_user,get_current_user_role
 from typing import List
@@ -63,7 +63,7 @@ def update_order_status(
 
 
 
-@router.get('', response_model=List[OrderSchema])
+@router.get('', response_model=List[OrderSchemaForTable])
 def get_user_orders(
     db:Session = Depends(get_db),
     user_id:int =None,
