@@ -131,6 +131,7 @@ class OrderLineSchema(BaseModel):
         orm_mode=True
 
 
+
 #Schema for creating a new order
 class OrderCreateSchema(BaseModel):
     order_lines: List[OrderLineSchema]
@@ -161,8 +162,31 @@ class OrderSchema(BaseModel):
 
 
 
+#Schema for order line details to display in the order table
+class OrderLineForTable(BaseModel):
+    book: BookDisplay
+    quantity: int
+
+    class Config():
+        orm_mode=True
+
+
+
+# Schema for order details to display in the order table
+class OrderSchemaForTable(BaseModel):
+    id: int
+    user: UserDisplay
+    order_status: OrderStatusEnum
+    
+    order_lines: List[OrderLineForTable]
+
+    class Config():
+        orm_mode=True
 
         
+
+
+
 #schema for retrieving an users order
 class UserOrder(BaseModel):
     user_id: int
