@@ -22,21 +22,6 @@ def create_book(request: BookBase, db: Session = Depends(get_db)):
     return db_book.create_book(db, request)
 
 
-"""
-#To make image folder accessible statically
-@router.post('/image')
-def upload_image(image: UploadFile = File(...)):
-    letters = string.ascii_letters
-    rand_str = ''.join(random.choice(letters) for i in range(6))
-    new = f'_{rand_str}'
-    filename = new.join(image.filename.rsplit('.', 1))
-    path = f'images/{filename}'
-
-    with open(path, "w+b") as buffer:
-        shutil.copyfileobj(image.file, buffer)
-    
-    return {'filename': path}"""
-
 
 
 """@router.get('', response_model=List[BookDisplay])
@@ -46,8 +31,8 @@ def get_all_books(db: Session = Depends(get_db)):
 
 # search a book  by title or author or keyword
 @router.get('', response_model=List[BookDisplay])
-def search_books_by_keyword(title: str = None, author: str = None, keyword: str = None, db: Session = Depends(get_db)):
-    return db_book.search_books(db, title, author, keyword)
+def search_books_by_keyword(title: str = None, author: str = None, keyword: str = None, book_id: int = None, db: Session = Depends(get_db)):
+    return db_book.search_books(db, title, author, keyword, book_id)
 
 
 # Define route to retrieve a single book by its ID

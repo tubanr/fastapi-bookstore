@@ -1,8 +1,10 @@
 from routers.schemas import BookBase, BookDisplay
 from sqlalchemy.orm.session import Session
-from database.models import Book, Author
+from database.models import Book, Author,Review
 from fastapi import status, HTTPException
 from sqlalchemy import or_
+
+
 
 def create_book(db: Session, request: BookBase):
     new_book = Book(
@@ -24,8 +26,9 @@ def create_book(db: Session, request: BookBase):
 
 
 #search books by title or author or keywords
-def search_books(db: Session, title: str = None, author: str = None, keyword: str = None):
+def search_books(db: Session, title: str = None, author: str = None, keyword: str = None, book_id: int = None):
     query = db.query(Book)
+  
 
     if title:
         query = query.filter(Book.title.ilike(f"%{title}%"))
@@ -35,6 +38,8 @@ def search_books(db: Session, title: str = None, author: str = None, keyword: st
     
     if keyword:
         query = query.filter(or_(Book.title.ilike(f"%{keyword}%"), Book.description.ilike(f"%{keyword}%")))
+    if book_id:
+        query = query.filter(Book.id)
     
     matching_books = query.all()
     return [BookDisplay.from_orm(book) for book in matching_books]
